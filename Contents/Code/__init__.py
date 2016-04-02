@@ -1,4 +1,5 @@
 import uuid, hashlib, urllib, re, os
+from DumbTools import DumbKeyboard
 
 PREFIX = "/video/couchpotato"
 
@@ -58,8 +59,12 @@ def MainMenu():
             summary="View and edit your CouchPotato wanted movies list",thumb=R(ICON)))
         oc.add(DirectoryObject(key=Callback(ComingSoonMenu), title="Coming Soon",
             summary="Browse upcoming movies and add them to your wanted list", thumb=R("RT-icon.png")))
-        oc.add(InputDirectoryObject(key=Callback(Search), title="Search for Movies",
-            summary="Find movies to add to your wanted list", prompt="Search for", thumb=R(SEARCH_ICON),))
+        if Client.Product in DumbKeyboard.clients:
+            DumbKeyboard(PREFIX, oc, Search, dktitle="Search for Movies", dkthumb=R(SEARCH_ICON))
+        else:
+            oc.add(InputDirectoryObject(key=Callback(Search), title="Search for Movies",
+                                        summary="Find movies to add to your wanted list", prompt="Search for",
+                                        thumb=R(SEARCH_ICON), ))
         oc.add(DirectoryObject(key=Callback(Suggestions), title="Suggestions",
             summary="Movies suggested by CouchPotato", thumb=R(ICON)))
     
